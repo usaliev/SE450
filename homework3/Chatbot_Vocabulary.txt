@@ -1,0 +1,17 @@
+<property name="user.nickname" value="Luai" />
+<property name="chatbot.nickname" value="Eliza" />
+<user>
+	<name.first>Luai</name.first>
+	<terminator>Bye!</terminator>
+</user>
+<chatbot>
+	<name.first>Eliza</name.first>
+	<terminator>Goodbye!</terminator>
+</chatbot>
+<opening name="opening.chatbot">
+	<statement>Hello ${user.nickname}!</statement>
+	<statement>My name is ${chatbot.nickname}.</statement>
+</opening>
+<query name="health.general">How are you?</query>
+<response name="health.fine">I am fine, thank you.</response>
+<response name="general.do_not_understand">I don't understand.</response>
