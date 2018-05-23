@@ -4,27 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class Query
 {
-    @SerializedName ("question")
-    private String question;
+    @SerializedName (value = "question", alternate = {"Question"})
+    private String question = "";
 
-    @SerializedName ("tag")
-    private String tag;
+    @SerializedName (value = "tag", alternate = {"Tag"})
+    private String tag = "";
 
-    @SerializedName ("subtag")
-    private String subtag;
-
-    /**
-     * Summary:        Set the question
-     * @param question The question
-     */
-    public void setQuestion(String question)
-    {
-        this.question = question;
-    }
+    @SerializedName (value = "subTag", alternate = {"subtag", "SubTag", "Subtag"})
+    private String subTag = "";
 
     /**
-     * Summary: Get the question
-     * @return  The question
+     * Get the question
+     *
+     * @return The question
      */
     public String getQuestion()
     {
@@ -32,38 +24,22 @@ public class Query
     }
 
     /**
-     * Summary:   Set the tag
-     * @param tag The tag
-     */
-    public void setTag(String tag)
-    {
-        this.tag = tag;
-    }
-
-    /**
-     * Summary: Get the tag
-     * @return  The tag
+     * Get the tag
+     *
+     * @return The tag
      */
     public String getTag()
     {
-        return this.tag;
+        return this.tag.toLowerCase();
     }
 
     /**
-     * Summary:      Set the subtag
-     * @param subtag The subtag
+     * Get the subTag
+     *
+     * @return The subTag
      */
-    public void setSubtag(String subtag)
+    public String getSubTag()
     {
-        this.subtag = subtag;
-    }
-
-    /**
-     * Summary: Get the subtag
-     * @return  The subtag
-     */
-    public String getSubtag()
-    {
-        return this.subtag;
+        return this.subTag.toLowerCase();
     }
 }

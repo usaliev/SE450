@@ -3,67 +3,43 @@ package edu.depaul.cdm.se450.project.chatBotVocabulary;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Summary: Container class for responses
+ * Container class for responses
  */
 public class Response
 {
-    @SerializedName ("tag")
-    private String tag;
+    @SerializedName (value = "tag", alternate = {"Tag"})
+    private String tag = "";
 
-    @SerializedName ("subTag")
-    private String subtag;
+    @SerializedName (value = "subTag", alternate = {"subtag", "SubTag", "Subtag"})
+    private String subTag = "";
 
-    @SerializedName ("response")
-    private String response;
-
-    /**
-     * Summary:   Set the tag
-     * @param tag The tag
-     */
-    public void setTag(String tag)
-    {
-        this.tag = tag;
-    }
+    @SerializedName (value = "response", alternate = {"Response"})
+    private String response = "";
 
     /**
-     * Summary: Get the tag
-     * @return  The tag
+     * Get the tag
+     *
+     * @return The tag
      */
     public String getTag()
     {
-        return this.tag;
+        return this.tag.toLowerCase();
     }
 
     /**
-     * Summary:      Set the subtag
-     * @param subtag The subtag
+     * Get the subTag
+     *
+     * @return The subTag
      */
-    public void setSubtag(String subtag)
+    public String getSubTag()
     {
-        this.subtag = tag;
+        return this.subTag.toLowerCase();
     }
 
     /**
-     * Summary: Get the subtag
-     * @return  The subtag
-     */
-    public String getSubtag()
-    {
-        return this.subtag;
-    }
-
-    /**
-     * Summary:        Set the response string
-     * @param response The response string
-     */
-    public void setResponse(String response)
-    {
-        this.response = response;
-    }
-
-    /**
-     * Summary: Get the response string
-     * @return  The response string
+     * Get the response string
+     *
+     * @return The response string
      */
     public String getResponse()
     {

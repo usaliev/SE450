@@ -10,25 +10,17 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- *  This is the driver (start-up) class for a sample implementation of
- *  the application. It demonstrates the basic principles of the MVC architecture,
- *  <p>
- *
+ * This is the driver (start-up) class for a sample implementation of
+ * the application. It demonstrates the basic principles of the MVC architecture,
  */
-
-public class Echo {
-
-    /*
-     *  Note: This application requires only one View and one Controller.
-     *        More complex interactive applications might need several
-     *        Views and Controllers.
-     */
-
-    public static void main( String[] args ) {
+public class Echo
+{
+    public static void main(String[] args)
+    {
 
         Model eModel;               //  Model architectural component
         InputView inputView;        //  Input view architectural component
-        OutputView outputView;		//	Output view architectural component
+        OutputView outputView;        //	Output view architectural component
         Controller eController;     //  Controller architectural component
 
         //  Banner for program.
@@ -47,21 +39,21 @@ public class Echo {
          *  the Observer pattern.
          */
         inputView = new InputView();
-        inputView.setModel( eModel );
-        eController.setView( inputView );
+        inputView.setModel(eModel);
+        eController.setView(inputView);
         outputView = new OutputView();
-        outputView.setModel( eModel );
+        outputView.setModel(eModel);
 
         /*
          *  Provide the Controller with a reference to the Model so
          *  that it can update the Model.
          */
-        eController.setModel( eModel );
+        eController.setModel(eModel);
 
         /*
          * Initialize Model instance with program banner.
          */
-        eModel.setBanner( eBanner );
+        eModel.setBanner(eBanner);
 
         /*
          * Get the configuration file at the path specified in the commandline
@@ -76,7 +68,6 @@ public class Echo {
         /*
          *  Let user know program terminated properly.
          */
-
-        System.out.println( "Echo terminated successfully." );
+        System.out.println("Echo terminated successfully.");
     }
 }

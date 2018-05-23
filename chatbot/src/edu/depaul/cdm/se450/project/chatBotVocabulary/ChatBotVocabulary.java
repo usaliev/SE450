@@ -1,6 +1,7 @@
 package edu.depaul.cdm.se450.project.chatBotVocabulary;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -8,108 +9,82 @@ import java.util.List;
  */
 public class ChatBotVocabulary
 {
-    @SerializedName ("properties")
-    private List<Property> Properties;
+    @SerializedName (value = "properties", alternate = {"Properties"})
+    private List<Property> properties;
 
-    @SerializedName ("users")
-    private List<User> Users;
+    @SerializedName (value = "users", alternate = {"Users"})
+    private User user;
 
-    @SerializedName ("openingStatements")
-    private List<String> OpeningStatements;
+    @SerializedName (value = "chatBot", alternate = {"chatbot", "ChatBot"})
+    private User chatBot;
 
-    @SerializedName ("queries")
-    private List<Query> Queries;
+    @SerializedName (value = "openingStatements", alternate = {"OpeningStatements"})
+    private List<String> openingStatements;
 
-    @SerializedName ("responses")
-    private List<Response> Responses;
+    @SerializedName (value = "queries", alternate = {"Queries"})
+    private List<Query> queries;
 
-    /**
-     * Summary:          Set the properties
-     * @param properties The properties
-     */
-    public void setProperties(List<Property> properties)
-    {
-        this.Properties = properties;
-    }
+    @SerializedName (value = "responses", alternate = {"Responses"})
+    private List<Response> responses;
 
     /**
-     * Summary: Get the properties
+     * Get the properties
+     *
      * @return The properties
      */
     public List<Property> getProperties()
     {
-        return this.Properties;
+        return this.properties;
     }
 
     /**
-     * Summary:     Set the users
-     * @param users The users
+     * Get the users
+     *
+     * @return The users
      */
-    public void setUsers(List<User> users)
+    public User getChatBot()
     {
-        this.Users = users;
+        return this.chatBot;
     }
 
     /**
-     * Summary: Get the users
-     * @return  The users
+     * Get the users
+     *
+     * @return The users
      */
-    public List<User> getUsers()
+    public User getUser()
     {
-        return this.Users;
+        return this.user;
     }
 
     /**
-     * Summary: Get the opening statements
-     * @return  The opening statements
+     * Get the opening statements
+     *
+     * @return The opening statements
      */
     public List<String> getOpeningStatements()
     {
-        return this.OpeningStatements;
+        return this.openingStatements;
     }
 
     /**
-     * Summary:                 Set the opening statements
-     * @param openingStatements The opening statements
-     */
-    public void setOpeningStatements(List<String> openingStatements)
-    {
-        this.OpeningStatements = openingStatements;
-    }
-
-    /**
-     * Summary: Get the queries
+     * Get the queries
+     *
      * @return The queries
      */
     public List<Query> getQueries()
     {
-        return Queries;
+        return queries;
     }
 
     /**
-     * Summary: set the queries
-     * @param queries the queries
-     */
-    public void setQueries(List<Query> queries)
-    {
-        this.Queries = queries;
-    }
-
-    /**
-     * Summary: Get the responses
+     * Get the responses
+     *
      * @return The responses
      */
     public List<Response> getResponses()
     {
-        return this.Responses;
+        return this.responses;
     }
 
-    /**
-     * Summary:         Set the responses
-     * @param responses The responses
-     */
-    public void setResponses(List<Response> responses)
-    {
-        this.Responses = responses;
-    }
 }

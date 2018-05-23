@@ -1,40 +1,33 @@
 {
-  "properties":
-  [
+  "properties": [
     {
-    "name": "Luai",
-    "nickName": "Luai"
+      "tag": "user",
+      "subtag": "nickName",
+      "value": "Luai"
     },
     {
-      "name": "Eliza",
-      "nickName": "Eliza"
+      "tag": "chatBot",
+      "subtag": "nickName",
+      "value": "Eliza"
     }
   ],
-  "users": [
-    {
+  "users": {
     "name": "Luai",
-    "terminator": "Bye!",
-    "nickName": "Luai",
-    "isChatbot": false
-    },
-    {
-      "name": "Eliza",
-      "terminator": "GoodBye!",
-      "nickName": "Eliza",
-      "isChatbot": true
-    }
-  ],
-  "openingStatements":
-  [
+    "terminator": "Bye!"
+  },
+  "chatbot": {
+    "name": "Eliza",
+    "terminator": "GoodBye!"
+  },
+  "openingStatements": [
     "Hello ${user.nickName}!",
-    "My name is ${chatbot.nickName}."
+    "My name is ${chatBot.nickName}."
   ],
-  "queries":
-  [
+  "queries": [
     {
-    "question": "How are you?",
-    "tag": "health",
-    "subtag": "general"
+      "question": "How are you?",
+      "tag": "health",
+      "subtag": "general"
     },
     {
       "question": "What is your favorite color?",
@@ -42,12 +35,11 @@
       "subtag": "general"
     }
   ],
-  "responses":
-  [
+  "responses": [
     {
-    "response": "I am fine, thank you.",
-    "tag": "health",
-    "subtag": "fine"
+      "response": "I am fine, thank you.",
+      "tag": "health",
+      "subtag": "fine"
     },
     {
       "response": "I don't understand.",

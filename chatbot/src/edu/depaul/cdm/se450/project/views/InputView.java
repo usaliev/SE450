@@ -6,9 +6,8 @@ import edu.depaul.cdm.se450.project.util.Observer;
 import edu.depaul.cdm.se450.project.util.EventCode;
 
 /**
- *  Input view for the application. Provides very simple functionality
- *	for accepting input string from user
- *
+ * Input view for the application. Provides very simple functionality
+ * for accepting input string from user
  */
 public class InputView extends View implements Observer
 {
@@ -28,20 +27,8 @@ public class InputView extends View implements Observer
     /**
      * Receive notification of an event in an Observable object.
      */
-
     public void handleEvent(EventCode eventCode)
     {
-
-        /*
-         *  Handle the single event type for an InputView:
-         *	<p>
-         *	(1) Print prompt to console.
-         *	<p>
-         *	(2) Read a line from the console.
-         *	<p>
-         *	(3) Notify Obervers (in this case, the Controller)
-         *		that the InputView has input.
-         */
 
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         String inString;
@@ -51,8 +38,6 @@ public class InputView extends View implements Observer
         {
             case READ_USER_INPUT:
             {
-                notifyObservers(EventCode.READ_USER_INPUT);
-
                 try
                 {
                     inString = console.readLine();
@@ -68,14 +53,17 @@ public class InputView extends View implements Observer
             }
             case READ_CONFIG_FILE:
             {
-                notifyObservers(EventCode.READ_USER_INPUT);
-                System.out.println("Do you wish to display the configuration file (y or n)?");
+                System.out.println("Do you wish to display the configuration file (y or n) and then exit?");
                 try
                 {
                     inString = console.readLine().toLowerCase();
                     if (inString.compareTo("y") == 0 || inString.compareTo("yes") == 0)
                     {
                         notifyObservers(EventCode.DISPLAY_CONFIG_FILE);
+                    }
+                    else
+                    {
+                        notifyObservers(EventCode.START_CHATBOT);
                     }
                 }
                 catch (IOException e)

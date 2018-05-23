@@ -6,43 +6,47 @@ import edu.depaul.cdm.se450.project.util.Observer;
 import edu.depaul.cdm.se450.project.util.EventCode;
 
 /**
- *  Controller for the application.
- *
+ * Controller for the application.
  */
-public class Controller implements Observer {
+public class Controller implements Observer
+{
 
     private InputView view;                 //  View observed by
-    										//	this Controller
+    //	this Controller
 
     private Model model;                    //  Model controlled by
-    										//	this Controller
+    //	this Controller
 
     /**
-     *  Set the Model to be controlled by this Controller.
+     * Set the Model to be controlled by this Controller.
      *
-     *  @param m    model to be controlled
+     * @param m model to be controlled
      */
-    public void setModel( Model m ) {
-        model = m;
+    public void setModel(Model m)
+    {
+        this.model = m;
     }
 
     /**
-     *  Set the View to be observed by this Controller.
+     * Set the View to be observed by this Controller.
      *
-     *  @param v    view to be observed
+     * @param v view to be observed
      */
-    public void setView( InputView v ) {
-        view = v;
-        v.addObserver( this );
+    public void setView(InputView v)
+    {
+        this.view = v;
+        v.addObserver(this);
     }
 
     /**
-     *  Receive notification of an event in the View.
-     *  <p>
-     *  This triggers the Controller to retrieve information from
-     *  the View and update the Model.
+     * Receive notification of an event in the View.
+     * This triggers the Controller to retrieve information from
+     * the View and update the Model.
+     *
+     * @param eventCode value indicating which event occurred
      */
-    public void handleEvent( EventCode eventCode ) {
+    public void handleEvent(EventCode eventCode)
+    {
 
         /*
          *  Note that a more complex program would require more
@@ -55,7 +59,7 @@ public class Controller implements Observer {
             case SET_MODEL_VALUE:
             {
                 String userInput = view.getUserInput();
-                this.model.setUserInput( userInput );
+                this.model.setUserInput(userInput);
                 break;
             }
             case DISPLAY_CONFIG_FILE:
@@ -63,13 +67,10 @@ public class Controller implements Observer {
                 this.model.notifyObservers(EventCode.DISPLAY_CONFIG_FILE);
                 break;
             }
-            case DONE_DISPLAYING:
+            case START_CHATBOT:
             {
-                this.model.setReadingInput();
-            }
-            case READ_USER_INPUT:
-            {
-                this.model.setReadingInput();
+                // possible use of the state pattern to control what
+                this.model.startChatting();
             }
         }
 

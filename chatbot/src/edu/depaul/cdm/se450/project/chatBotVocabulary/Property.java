@@ -4,47 +4,43 @@ import com.google.gson.annotations.SerializedName;
 
 public class Property
 {
-    @SerializedName ("name")
-    private String name;
+    @SerializedName (value = "tag", alternate = {"Tag"})
+    private String tag = "";
 
-    @SerializedName ("nickName")
-    private String nickName;
+    @SerializedName (value = "subTag", alternate = {"subtag", "SubTag", "Subtag"})
+    private String subTag = "";
+
+    @SerializedName (value = "value", alternate = {"Value"})
+    private String value = "";
 
     /**
-     * Summary: Get the name
-     * @return  The name
+     * Get the tag
+     *
+     * @return The tag
      */
-    public String getName()
+    public String getTag()
     {
-        return name;
+        return this.tag.toLowerCase();
     }
 
     /**
-     * Summary:    Set the name
-     * @param name The name
+     * Get the subTag
+     *
+     * @return The subTag
      */
-    public void setName(String name)
+    public String getSubTag()
     {
-        this.name = name;
+        return this.subTag.toLowerCase();
     }
 
     /**
-     * Summary: Get the nickname
-     * @return  The nickname
+     * Get the nickname
+     *
+     * @return The nickname
      */
-    public String getNickName()
+    public String getValue()
     {
-        return nickName;
+        return this.value;
     }
-
-    /**
-     * Summary:        Set the nickname
-     * @param nickName The nickname
-     */
-    public void setNickName(String nickName)
-    {
-        this.nickName = nickName;
-    }
-
 
 }

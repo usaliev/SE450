@@ -4,68 +4,30 @@ import com.google.gson.annotations.SerializedName;
 
 public class User
 {
-    @SerializedName ("name")
-    private String Name;
+    @SerializedName (value = "name", alternate = {"Name"})
+    private String name = "";
 
-    @SerializedName ("terminator")
-    private String terminator;
-
-    @SerializedName ("isChatbot")
-    private boolean isChatbot;
+    @SerializedName (value = "terminator", alternate = {"Terminator"})
+    private String terminator = "";
 
     /**
-     * Summary: Get the name
-     * @return  The name
+     * Get the name
+     *
+     * @return The name
      */
     public String getName()
     {
-        return Name;
+        return name;
     }
 
     /**
-     * Sumamry:    Set the name
-     * @param name The name
-     */
-    public void setName(String name)
-    {
-        Name = name;
-    }
-
-    /**
-     * Summary: Get the terminator
-     * @return  The terminator
+     * Get the terminator
+     *
+     * @return The terminator
      */
     public String getTerminator()
     {
         return terminator;
     }
-
-    /**
-     * Summary:          Get the terminator
-     * @param terminator The terminator
-     */
-    public void setTerminator(String terminator)
-    {
-        this.terminator = terminator;
-    }
-
-    /**
-     * Summary: Get a value indicating if this is a chatbot user
-     * @return  A value indicating if this is a chatbot user
-     */
-    public boolean isChatbot()
-    {
-        return isChatbot;
-    }
-
-    /**
-     * Summary:       Set a value indicating if this is a chatbot user
-     * @param chatbot A value indicating if this is a chatbot user
-     */
-    public void setChatbot(boolean chatbot)
-    {
-        isChatbot = chatbot;
-    }
-
 
 }
