@@ -16,7 +16,8 @@ public enum EventCode
     DISPLAY_USER_INPUT(3),
     DISPLAY_CONFIG_FILE(4),
     READ_CONFIG_FILE(5),
-    START_CHATBOT(6);
+    START_CHATBOT(6),
+    EXIT_CHATBOT(7);
 
     private final int value;    // Value of enum instance.
 

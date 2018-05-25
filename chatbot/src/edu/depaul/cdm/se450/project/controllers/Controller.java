@@ -2,6 +2,7 @@ package edu.depaul.cdm.se450.project.controllers;
 
 import edu.depaul.cdm.se450.project.model.Model;
 import edu.depaul.cdm.se450.project.views.InputView;
+import edu.depaul.cdm.se450.project.views.OutputView;
 import edu.depaul.cdm.se450.project.util.Observer;
 import edu.depaul.cdm.se450.project.util.EventCode;
 
@@ -11,11 +12,9 @@ import edu.depaul.cdm.se450.project.util.EventCode;
 public class Controller implements Observer
 {
 
-    private InputView view;                 //  View observed by
-    //	this Controller
-
-    private Model model;                    //  Model controlled by
-    //	this Controller
+    private InputView inputView;
+    private OutputView outputView;
+    private Model model;
 
     /**
      * Set the Model to be controlled by this Controller.
@@ -25,17 +24,24 @@ public class Controller implements Observer
     public void setModel(Model m)
     {
         this.model = m;
+        m.addObserver(this);
     }
 
     /**
-     * Set the View to be observed by this Controller.
+     * Set the Input View to be observed by this Controller.
      *
-     * @param v view to be observed
+     * @param inputView input view to be observed
      */
-    public void setView(InputView v)
+    public void setInputView(InputView inputView)
     {
-        this.view = v;
-        v.addObserver(this);
+        this.inputView = inputView;
+        inputView.addObserver(this);
+    }
+
+    public void setOutputView(OutputView outputView)
+    {
+        this.outputView = outputView;
+        outputView.addObserver(this);
     }
 
     /**
@@ -47,30 +53,47 @@ public class Controller implements Observer
      */
     public void handleEvent(EventCode eventCode)
     {
-
-        /*
-         *  Note that a more complex program would require more
-         *	sophisticated event handling similar to that in OutputView.
-         *	See handleEvent() in OuputView for more details.
-         */
-
         switch (eventCode)
         {
+            case INITIALIZE:
+            {
+                this.outputView.initialize(this.model.getBanner());
+                break;
+            }
             case SET_MODEL_VALUE:
             {
-                String userInput = view.getUserInput();
-                this.model.setUserInput(userInput);
+                this.model.setUserInput(this.inputView.getUserInput());
                 break;
             }
             case DISPLAY_CONFIG_FILE:
             {
-                this.model.notifyObservers(EventCode.DISPLAY_CONFIG_FILE);
+                this.outputView.displayConfigFile(this.model.getConfigurationFile());
                 break;
             }
             case START_CHATBOT:
             {
-                // possible use of the state pattern to control what
                 this.model.startChatting();
+                break;
+            }
+            case EXIT_CHATBOT:
+            {
+                this.model.exitChatBot();
+                break;
+            }
+            case READ_CONFIG_FILE:
+            {
+                this.inputView.readConfigurationFile();
+                break;
+            }
+            case READ_USER_INPUT:
+            {
+                this.inputView.readUserInput();
+                break;
+            }
+            case DISPLAY_USER_INPUT:
+            {
+                this.outputView.displayOutput(this.model.getUserInput());
+                break;
             }
         }
 

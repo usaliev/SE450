@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.stream.*;
 
 import com.google.gson.*;
 
@@ -28,8 +27,7 @@ public class Model implements Observable
 
     private StringBuilder banner;            // Start-up banner
     private StringBuilder input;             // Input from user
-    private boolean terminateProgram = false; // Boolean determining if we need to terminate
-    private ChatBotVocabulary chatBotVocabulary;
+    private ChatbotVocabulary chatbotVocabulary;
     private String doNotUnderstandString = "";
     private ArrayList<Observer> observers = new ArrayList<Observer>();
 
@@ -54,26 +52,6 @@ public class Model implements Observable
     }
 
     /**
-     * Execute this object. This method begins the MVC
-     * cycle by notifying the attached view that an event has occurred,
-     * then notifying it when it is ready to accept user input.
-     * <p>
-     * NOTE: In a more complex program, a more sophisticated event
-     * specification mechanism would be needed.
-     */
-    public void run()
-    {
-        // we need to terminate for some reason so don't initialize
-        if (terminateProgram)
-        {
-            return;
-        }
-
-        this.notifyObservers(EventCode.INITIALIZE);
-        this.notifyObservers(EventCode.READ_CONFIG_FILE);
-    }
-
-    /**
      * Set the user input to this application.
      *
      * @param i user input to application
@@ -91,6 +69,54 @@ public class Model implements Observable
     public String getUserInput()
     {
         return input.toString();
+    }
+
+    /**
+     * Set the chatbotVocabulary from the filepath
+     *
+     * @param filePath a JSON file that matches the format expected for a ChatbotVocabulary object
+     */
+    public void setConfigurationFile(String filePath)
+    {
+        //TODO implement error handler
+        try
+        {
+
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+
+            Gson gson = new Gson();
+            this.chatbotVocabulary = gson.fromJson(br, ChatbotVocabulary.class);
+
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error " + ex);
+            notifyObservers(EventCode.EXIT_CHATBOT);
+        }
+    }
+
+    /**
+     * Get the chatbotVocabulary object
+     *
+     * @return The chatbotVocabulary object
+     */
+    public ChatbotVocabulary getConfigurationFile()
+    {
+        return this.chatbotVocabulary;
+    }
+
+    /**
+     * Execute this object. This method begins the MVC
+     * cycle by notifying the attached view that an event has occurred,
+     * then notifying it when it is ready to accept user input.
+     * <p>
+     * NOTE: In a more complex program, a more sophisticated event
+     * specification mechanism would be needed.
+     */
+    public void run()
+    {
+        this.notifyObservers(EventCode.INITIALIZE);
+        this.notifyObservers(EventCode.READ_CONFIG_FILE);
     }
 
     /**
@@ -139,7 +165,7 @@ public class Model implements Observable
      */
     private void sendOpeningStatements()
     {
-        for (String statement : this.chatBotVocabulary.getOpeningStatements())
+        for (String statement : this.chatbotVocabulary.getOpeningStatements())
         {
             if (statement.indexOf("${") >= 0 && statement.indexOf("}") >= 0)
             {
@@ -162,16 +188,16 @@ public class Model implements Observable
     {
         this.sendOpeningStatements();
 
-        for (Query query : this.chatBotVocabulary.getQueries())
+        for (Query query : this.chatbotVocabulary.getQueries())
         {
             this.input = new StringBuilder(query.getQuestion());
             this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
             this.notifyObservers(EventCode.READ_USER_INPUT);
 
             // if at any point the user says their termination line exit
-            if (this.input.equals(this.chatBotVocabulary.getUser().getTerminator()))
+            if (this.input.equals(this.chatbotVocabulary.getUser().getTerminator()))
             {
-                this.input = new StringBuilder(this.chatBotVocabulary.getChatBot().getTerminator());
+                this.input = new StringBuilder(this.chatbotVocabulary.getChatBot().getTerminator());
                 this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
                 this.exitChatBot();
             }
@@ -182,9 +208,9 @@ public class Model implements Observable
         while (true)
         {
             this.notifyObservers(EventCode.READ_USER_INPUT);
-            if (this.input.toString().compareToIgnoreCase(this.chatBotVocabulary.getUser().getTerminator()) == 0)
+            if (this.input.toString().compareToIgnoreCase(this.chatbotVocabulary.getUser().getTerminator()) == 0)
             {
-                this.input = new StringBuilder(this.chatBotVocabulary.getUser().getTerminator());
+                this.input = new StringBuilder(this.chatbotVocabulary.getUser().getTerminator());
                 this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
                 this.exitChatBot();
             }
@@ -200,7 +226,7 @@ public class Model implements Observable
         String tag = "";
         String subTag = "";
 
-        for (Query query : this.chatBotVocabulary.getQueries())
+        for (Query query : this.chatbotVocabulary.getQueries())
         {
             if (query.getQuestion().compareToIgnoreCase(this.input.toString().toLowerCase()) == 0)
             {
@@ -209,7 +235,7 @@ public class Model implements Observable
             }
         }
 
-        for (Response response : this.chatBotVocabulary.getResponses())
+        for (Response response : this.chatbotVocabulary.getResponses())
         {
             if (response.getTag().compareToIgnoreCase(tag) == 0)
             {
@@ -233,40 +259,6 @@ public class Model implements Observable
     }
 
     /**
-     * Set the chatBotVocabulary from the filepath
-     *
-     * @param filePath a JSON file that matches the format expected for a ChatBotVocabulary object
-     */
-    public void setConfigurationFile(String filePath)
-    {
-        //TODO implement error handler
-        try
-        {
-
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
-
-            Gson gson = new Gson();
-            this.chatBotVocabulary = gson.fromJson(br, ChatBotVocabulary.class);
-
-        }
-        catch (IOException ex)
-        {
-            System.out.println("Error " + ex);
-            this.terminateProgram = true;
-        }
-    }
-
-    /**
-     * Get the chatBotVocabulary object
-     *
-     * @return The chatBotVocabulary object
-     */
-    public ChatBotVocabulary getConfigurationFile()
-    {
-        return this.chatBotVocabulary;
-    }
-
-    /**
      * Given the line determine if any of the properties supplied in the chatbot vocabulary file are a match
      * for the tags in the line and if they do match replace the tags with the value from the file
      *
@@ -286,7 +278,7 @@ public class Model implements Observable
             String tag = tags[0].toLowerCase();
             String subTag = tags[1].toLowerCase();
 
-            for (Property property : this.chatBotVocabulary.getProperties())
+            for (Property property : this.chatbotVocabulary.getProperties())
             {
                 //it's better to keep the formatting when outputting the string but we need to ignore case problems
                 if (property.getTag().compareToIgnoreCase(tag) == 0 && property.getSubTag().compareToIgnoreCase(subTag) == 0)
@@ -303,6 +295,6 @@ public class Model implements Observable
      */
     public void exitChatBot()
     {
-        return;
+        System.exit(0);
     }
 }

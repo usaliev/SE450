@@ -12,25 +12,10 @@ import edu.depaul.cdm.se450.project.util.EventCode;
  * View superclass for the application. Provides basic fields and
  * functionality of Observer to subclasses.
  */
-public abstract class View implements Observer, Observable
+public abstract class View implements Observable
 {
 
-    protected Model model;            //  Model observed by this View
-
     protected ArrayList<Observer> observers = new ArrayList<Observer>();
-
-    /**
-     * Set the Model to be observed by this View.
-     *
-     * @param m model to be observed
-     */
-    public void setModel(Model m)
-    {
-        model = m;
-        m.addObserver(this);
-    }
-
-    public abstract void handleEvent(EventCode eventCode);
 
     /**
      * Add an observer to the list of observers for this object. An observer

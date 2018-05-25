@@ -2,14 +2,13 @@ package edu.depaul.cdm.se450.project.views;
 
 import java.io.*;
 
-import edu.depaul.cdm.se450.project.util.Observer;
 import edu.depaul.cdm.se450.project.util.EventCode;
 
 /**
  * Input view for the application. Provides very simple functionality
  * for accepting input string from user
  */
-public class InputView extends View implements Observer
+public class InputView extends View
 {
 
     private StringBuilder inputString;      //  User input string
@@ -24,55 +23,49 @@ public class InputView extends View implements Observer
         return inputString.toString();
     }
 
-    /**
-     * Receive notification of an event in an Observable object.
-     */
-    public void handleEvent(EventCode eventCode)
+    public void readUserInput()
     {
-
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         String inString;
 
-        //  Read input from user and notify observers.
-        switch (eventCode)
+        try
         {
-            case READ_USER_INPUT:
-            {
-                try
-                {
-                    inString = console.readLine();
-                }
-                catch (IOException e)
-                {
-                    inString = "<" + e + ">";
-                }
+            inString = console.readLine();
+        }
+        catch (IOException e)
+        {
+            inString = "<" + e + ">";
+        }
 
-                inputString = new StringBuilder(inString);
-                notifyObservers(EventCode.SET_MODEL_VALUE);
-                break;
-            }
-            case READ_CONFIG_FILE:
+        inputString = new StringBuilder(inString);
+        notifyObservers(EventCode.SET_MODEL_VALUE);
+    }
+
+    public void readConfigurationFile()
+    {
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        String inString = "";
+
+        try
+        {
+            System.out.println("Do you wish to display the configuration file (y or n) and then exit?");
+            inString = console.readLine().toLowerCase();
+            if (inString.compareToIgnoreCase("y") == 0 || inString.compareToIgnoreCase("yes") == 0)
             {
-                System.out.println("Do you wish to display the configuration file (y or n) and then exit?");
-                try
-                {
-                    inString = console.readLine().toLowerCase();
-                    if (inString.compareTo("y") == 0 || inString.compareTo("yes") == 0)
-                    {
-                        notifyObservers(EventCode.DISPLAY_CONFIG_FILE);
-                    }
-                    else
-                    {
-                        notifyObservers(EventCode.START_CHATBOT);
-                    }
-                }
-                catch (IOException e)
-                {
-                    inputString = new StringBuilder("<" + e + ">");
-                    notifyObservers(EventCode.SET_MODEL_VALUE);
-                }
-                break;
+                notifyObservers(EventCode.DISPLAY_CONFIG_FILE);
+            }
+            else
+            {
+                notifyObservers(EventCode.START_CHATBOT);
             }
         }
+        catch (IOException e)
+        {
+            inputString = new StringBuilder("<" + e + ">");
+            notifyObservers(EventCode.SET_MODEL_VALUE);
+        }
+
+        inputString = new StringBuilder(inString);
+        notifyObservers(EventCode.SET_MODEL_VALUE);
     }
 }

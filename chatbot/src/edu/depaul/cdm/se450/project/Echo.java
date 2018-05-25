@@ -18,6 +18,18 @@ public class Echo
     public static void main(String[] args)
     {
 
+        if (args.length < 0)
+        {
+            System.out.println("Missing argument");
+            System.out.println("Usage: Echo [path to chatbot vocabulary file]");
+            return;
+        }
+        if( args[0].substring( args[0].length() - 4, args[0].length()).compareToIgnoreCase("json") != 0 )
+        {
+            System.out.println("Invalid file type, please specify a json file");
+            return;
+        }
+
         Model eModel;               //  Model architectural component
         InputView inputView;        //  Input view architectural component
         OutputView outputView;        //	Output view architectural component
@@ -39,10 +51,10 @@ public class Echo
          *  the Observer pattern.
          */
         inputView = new InputView();
-        inputView.setModel(eModel);
-        eController.setView(inputView);
+        eController.setInputView(inputView);
+
         outputView = new OutputView();
-        outputView.setModel(eModel);
+        eController.setOutputView(outputView);
 
         /*
          *  Provide the Controller with a reference to the Model so

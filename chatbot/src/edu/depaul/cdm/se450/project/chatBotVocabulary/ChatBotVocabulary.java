@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Summary: Container class for the chatbots vocabulary
  */
-public class ChatBotVocabulary
+public class ChatbotVocabulary
 {
     @SerializedName (value = "properties", alternate = {"Properties"})
     private List<Property> properties;
@@ -15,7 +15,7 @@ public class ChatBotVocabulary
     @SerializedName (value = "users", alternate = {"Users"})
     private User user;
 
-    @SerializedName (value = "chatBot", alternate = {"chatbot", "ChatBot"})
+    @SerializedName (value = "chatBot", alternate = {"chatbot", "Chatbot"})
     private User chatBot;
 
     @SerializedName (value = "openingStatements", alternate = {"OpeningStatements"})
