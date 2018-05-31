@@ -10,11 +10,6 @@ import com.google.gson.*;
 public class OutputView extends View
 {
 
-    public void initialize( String banner)
-    {
-        System.out.println(banner);
-    }
-
     public void displayOutput( String output )
     {
         System.out.println(output);

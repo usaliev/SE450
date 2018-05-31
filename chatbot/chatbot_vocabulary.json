@@ -1,29 +1,31 @@
 {
-  "properties": [
-    {
-      "tag": "user",
-      "subtag": "nickName",
-      "value": "Luai"
-    },
+  "properties": [{
+    "tag": "user",
+    "subtag": "nickName",
+    "value": "Luai"
+  },
     {
       "tag": "chatBot",
       "subtag": "nickName",
       "value": "Eliza"
-    }
-  ],
-  "users": {
+    }],
+  "users":
+  {
     "name": "Luai",
     "terminator": "Bye!"
   },
-  "chatbot": {
+  "chatbot":
+  {
     "name": "Eliza",
     "terminator": "GoodBye!"
   },
-  "openingStatements": [
+  "openingStatements":
+  [
     "Hello ${user.nickName}!",
     "My name is ${chatBot.nickName}."
   ],
-  "queries": [
+  "queries":
+  [
     {
       "question": "How are you?",
       "tag": "health",
@@ -33,18 +35,114 @@
       "question": "What is your favorite color?",
       "tag": "personal",
       "subtag": "general"
+    },
+    {
+      "question": "Who's your favorite actor?",
+      "tag": "movies",
+      "subtag": "actor"
+    },
+    {
+      "question": "Who's your favorite actress?",
+      "tag": "movies",
+      "subtag": "actress"
+    },
+    {
+      "question": "Who's your favorite director?",
+      "tag": "movies",
+      "subtag": "director"
+    },
+    {
+      "question": "What's your favorite movie?",
+      "tag": "movies",
+      "subtag": "title"
     }
   ],
-  "responses": [
+  "responses":
+  [
     {
       "response": "I am fine, thank you.",
       "tag": "health",
       "subtag": "fine"
     },
     {
+      "response": "I'm fine, thank you.",
+      "tag": "health",
+      "subtag": "fine"
+    },
+    {
+      "response": "I'm fine.",
+      "tag": "health",
+      "subtag": "fine"
+    }
+  ],
+  "unexpectedResponses":
+  [
+    {
       "response": "I don't understand.",
       "tag": "general",
-      "subtag": "do not understand"
+      "subtag": "unexpected response"
+    },
+    {
+      "response": "Could you clarify please?",
+      "tag": "general",
+      "subtag": "unexpected response"
+    }
+  ],
+  "movies" :
+  [
+    "Saving Private Ryan",
+    "Big",
+    "Cast Away",
+    "Terminator"
+  ],
+  "actors":
+  [
+    {
+      "name": "Tom Hanks",
+      "eval": "like"
+    },
+    {
+      "name": "Will Smith",
+      "eval": "like"
+    },
+    {
+      "name": "Tom Green",
+      "eval": "dislike"
+    }
+  ],
+  "actresses":
+  [
+    {
+      "name": "Sandra Bullock",
+      "eval": "like"
+    },
+    {
+      "name": "Margot Robbie",
+      "eval": "like"
+    },
+    {
+      "name": "Lindsey Lohan",
+      "eval": "dislike"
+    }
+  ],
+  "directors":
+  [
+    {
+      "name": "James Cameron",
+      "eval": "like"
+    },
+    {
+      "name": "Stephen Spielberg",
+      "eval": "like"
+    },
+    {
+      "name": "Quentin Tarantino",
+      "eval": "like"
+    },
+    {
+      "name":"Andrew Stanton",
+      "eval": "dislike"
+              
     }
   ]
 }

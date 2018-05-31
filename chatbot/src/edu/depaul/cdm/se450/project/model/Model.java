@@ -13,23 +13,15 @@ import edu.depaul.cdm.se450.project.util.Observer;
 import edu.depaul.cdm.se450.project.util.Observable;
 import edu.depaul.cdm.se450.project.util.EventCode;
 
-/**
- * Model for the application. Provides very simple functionality:
- * <p>
- * (1) Notify Observers when started
- * <p>
- * (2) Accept input string from View via Controller
- * <p>
- * (3) Notify Observers when input string has been received
- */
 public class Model implements Observable
 {
 
-    private StringBuilder banner;            // Start-up banner
-    private StringBuilder input;             // Input from user
+    private StringBuilder banner;
+    private StringBuilder input;
+    private UserResponse userResponse = new UserResponse();
     private ChatbotVocabulary chatbotVocabulary;
     private String doNotUnderstandString = "";
-    private ArrayList<Observer> observers = new ArrayList<Observer>();
+    private ArrayList<Observer> observers = new ArrayList<>();
 
     /**
      * Set the banner for this application.
@@ -81,12 +73,10 @@ public class Model implements Observable
         //TODO implement error handler
         try
         {
-
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
             Gson gson = new Gson();
             this.chatbotVocabulary = gson.fromJson(br, ChatbotVocabulary.class);
-
         }
         catch (IOException ex)
         {
@@ -176,7 +166,7 @@ public class Model implements Observable
                 this.input = new StringBuilder(statement);
             }
 
-            this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
+            this.notifyObservers(EventCode.DISPLAY_OUTPUT);
         }
     }
 
@@ -190,17 +180,10 @@ public class Model implements Observable
 
         for (Query query : this.chatbotVocabulary.getQueries())
         {
-            this.input = new StringBuilder(query.getQuestion());
-            this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
-            this.notifyObservers(EventCode.READ_USER_INPUT);
-
-            // if at any point the user says their termination line exit
-            if (this.input.equals(this.chatbotVocabulary.getUser().getTerminator()))
-            {
-                this.input = new StringBuilder(this.chatbotVocabulary.getChatBot().getTerminator());
-                this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
-                this.exitChatBot();
-            }
+            this.queryUser(query);
+            String response = this.getChatbotResponse( this.input.toString(), query);
+            this.input = new StringBuilder(response);
+            notifyObservers(EventCode.DISPLAY_OUTPUT);
         }
 
         // all of the queries have been run through at this point so let the user ask questions till they say
@@ -211,51 +194,99 @@ public class Model implements Observable
             if (this.input.toString().compareToIgnoreCase(this.chatbotVocabulary.getUser().getTerminator()) == 0)
             {
                 this.input = new StringBuilder(this.chatbotVocabulary.getUser().getTerminator());
-                this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
+                this.notifyObservers(EventCode.DISPLAY_OUTPUT);
                 this.exitChatBot();
             }
-            this.respondToUser();
+
+            if (this.chatbotVocabulary.inQueries(this.input.toString()))
+            {
+
+                this.respondToUser(this.chatbotVocabulary.getQueryByQuestion(this.input.toString()));
+            }
+            else
+            {
+                this.userResponse.setResponseType( new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
+                this.input = new StringBuilder(this.userResponse.getResponse());
+                this.notifyObservers(EventCode.DISPLAY_OUTPUT);
+            }
+        }
+    }
+
+    private void queryUser(Query query)
+    {
+        this.input = new StringBuilder(query.getQuestion());
+        this.notifyObservers(EventCode.DISPLAY_OUTPUT);
+        this.notifyObservers(EventCode.READ_USER_INPUT);
+
+        // if at any point the user says their termination line exit
+        if (this.input.equals(this.chatbotVocabulary.getUser().getTerminator()))
+        {
+            this.input = new StringBuilder(this.chatbotVocabulary.getChatBot().getTerminator());
+            this.notifyObservers(EventCode.DISPLAY_OUTPUT);
+            this.exitChatBot();
+        }
+    }
+
+    private String getChatbotResponse(String userResponse, Query questionAsked)
+    {
+        String tag = questionAsked.getTag();
+        String subTag = questionAsked.getSubTag();
+
+        if( tag.compareToIgnoreCase("movies") == 0)
+        {
+            if( subTag.compareToIgnoreCase("title") == 0)
+            {
+               return this.checkMovie();
+            }
+            if( subTag.compareToIgnoreCase("actor") == 0)
+            {
+                return this.checkActor();
+            }
+            if( subTag.compareToIgnoreCase("actress") == 0)
+            {
+                return this.checkActress();
+            }
+            if( subTag.compareToIgnoreCase("director") == 0)
+            {
+                return this.checkDirector();
+            }
+        }
+
+        if( this.chatbotVocabulary.inResponses(userResponse))
+        {
+            this.userResponse.setResponseType( new ExpectedResponse(userResponse));
+            return this.userResponse.getResponse();
+        }
+        else
+        {
+            this.userResponse.setResponseType( new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
+            return this.userResponse.getResponse();
         }
     }
 
     /**
      * The user has asked a question so check if we have a response that matches the tags associated with it
      */
-    private void respondToUser()
+    private void respondToUser(Query query)
     {
-        String tag = "";
-        String subTag = "";
-
-        for (Query query : this.chatbotVocabulary.getQueries())
-        {
-            if (query.getQuestion().compareToIgnoreCase(this.input.toString().toLowerCase()) == 0)
-            {
-                tag = query.getTag();
-                subTag = query.getSubTag();
-            }
-        }
+        String tag = query.getTag();
+        String subTag = query.getSubTag();
 
         for (Response response : this.chatbotVocabulary.getResponses())
         {
             if (response.getTag().compareToIgnoreCase(tag) == 0)
             {
                 this.input = new StringBuilder(response.getResponse());
-                this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
+                this.notifyObservers(EventCode.DISPLAY_OUTPUT);
 
                 //once you find the first match just return
                 return;
             }
-
-            // need a better way to handle this
-            if (doNotUnderstandString == "" && response.getTag().compareToIgnoreCase("General") == 0
-                    && response.getSubTag().compareToIgnoreCase("do not understand") == 0)
-            {
-                doNotUnderstandString = response.getResponse();
-            }
         }
 
-        this.input = new StringBuilder(doNotUnderstandString);
-        this.notifyObservers(EventCode.DISPLAY_USER_INPUT);
+        this.userResponse.setResponseType( new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
+        this.input = new StringBuilder(this.userResponse.getResponse());
+        this.notifyObservers(EventCode.DISPLAY_OUTPUT);
     }
 
     /**
@@ -288,6 +319,68 @@ public class Model implements Observable
             }
         }
         return line;
+    }
+
+    private String checkMovie()
+    {
+        if( this.chatbotVocabulary.getMovies().contains(this.input.toString()))
+        {
+            return "I’ve seen that movie";
+        }
+        return "I haven't seen that movie";
+    }
+
+    private String checkActor()
+    {
+        for( Person actor : this.chatbotVocabulary.getActors())
+        {
+            if( actor.getName().compareToIgnoreCase(this.input.toString()) == 0 )
+            {
+                if (actor.getEval())
+                {
+                    return "I like that actor";
+                }
+               return "I don't like that actor";
+            }
+        }
+        return "I don't know that actor";
+    }
+
+    private String checkActress()
+    {
+        for( Person actress : this.chatbotVocabulary.getActresses())
+        {
+            if( actress.getName().compareToIgnoreCase(this.input.toString()) == 0 )
+            {
+                if (actress.getEval())
+                {
+                    return "I like that actress";
+                }
+                return "I don't like that actress";
+            }
+        }
+        return "I don't know that actress";
+    }
+
+    private String checkDirector()
+    {
+        for( Person director : this.chatbotVocabulary.getDirectors())
+        {
+            if( director.getName().compareToIgnoreCase(this.input.toString()) == 0 )
+            {
+                if (director.getEval())
+                {
+                    return "I like that director";
+                }
+                return "I don't like that director";
+            }
+        }
+        this.input = new StringBuilder("I don't know that director");
+        notifyObservers(EventCode.DISPLAY_OUTPUT);
+
+        Query nameAMovie = new Query( "Tell me one film the director made", "movies", "title");
+        this.queryUser(nameAMovie);
+        return this.getChatbotResponse(this.input.toString(), nameAMovie);
     }
 
     /**

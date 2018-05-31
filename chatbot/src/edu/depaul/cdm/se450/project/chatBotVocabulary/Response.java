@@ -45,4 +45,11 @@ public class Response
     {
         return this.response;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        String response = obj.toString();
+        return (this.response.compareToIgnoreCase(response) == 0);
+    }
 }

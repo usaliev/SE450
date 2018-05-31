@@ -11,7 +11,6 @@ import edu.depaul.cdm.se450.project.util.EventCode;
  */
 public class Controller implements Observer
 {
-
     private InputView inputView;
     private OutputView outputView;
     private Model model;
@@ -57,45 +56,84 @@ public class Controller implements Observer
         {
             case INITIALIZE:
             {
-                this.outputView.initialize(this.model.getBanner());
+                this.initialize();
                 break;
             }
             case SET_MODEL_VALUE:
             {
-                this.model.setUserInput(this.inputView.getUserInput());
+                this.setUserInput();
                 break;
             }
             case DISPLAY_CONFIG_FILE:
             {
-                this.outputView.displayConfigFile(this.model.getConfigurationFile());
+                this.displayConfig();
                 break;
             }
             case START_CHATBOT:
             {
-                this.model.startChatting();
+                this.startChatbot();
                 break;
             }
             case EXIT_CHATBOT:
             {
-                this.model.exitChatBot();
+                this.exitChatbot();
                 break;
             }
             case READ_CONFIG_FILE:
             {
-                this.inputView.readConfigurationFile();
+                this.readConfigFile();
                 break;
             }
             case READ_USER_INPUT:
             {
-                this.inputView.readUserInput();
+                this.readInput();
                 break;
             }
-            case DISPLAY_USER_INPUT:
+            case DISPLAY_OUTPUT:
             {
-                this.outputView.displayOutput(this.model.getUserInput());
+                this.displayOutput();
                 break;
             }
         }
+    }
 
+    private void initialize()
+    {
+        this.outputView.displayOutput(this.model.getBanner());
+    }
+
+    private void setUserInput()
+    {
+        this.model.setUserInput(this.inputView.getUserInput());
+    }
+
+    private void displayConfig()
+    {
+        this.outputView.displayConfigFile(this.model.getConfigurationFile());
+    }
+
+    private void displayOutput()
+    {
+        this.outputView.displayOutput(this.model.getUserInput());
+    }
+
+    private void startChatbot()
+    {
+        this.model.startChatting();
+    }
+
+    private void exitChatbot()
+    {
+        this.model.exitChatBot();
+    }
+
+    private void readConfigFile()
+    {
+        this.inputView.readConfigurationFile();
+    }
+
+    private void readInput()
+    {
+        this.inputView.readUserInput();
     }
 }
