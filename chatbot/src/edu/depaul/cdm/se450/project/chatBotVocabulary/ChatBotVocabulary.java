@@ -27,19 +27,19 @@ public class ChatbotVocabulary
     @SerializedName (value = "responses", alternate = {"Response"})
     private List<Response> responses;
 
-    @SerializedName( value = "unexpectedResponses", alternate = {"UnexpectedResponses", "unexpectedresponses", "Unexpectedresponses"})
+    @SerializedName (value = "unexpectedResponses", alternate = {"UnexpectedResponses", "unexpectedresponses", "Unexpectedresponses"})
     private List<Response> unexpectedResponses;
 
-    @SerializedName(value = "actors", alternate = { "Actors"})
+    @SerializedName (value = "actors", alternate = {"Actors"})
     private List<Person> actors;
 
-    @SerializedName(value = "actresses", alternate = { "Actresses"})
+    @SerializedName (value = "actresses", alternate = {"Actresses"})
     private List<Person> actresses;
 
-    @SerializedName(value = "directors", alternate = { "Directors"})
+    @SerializedName (value = "directors", alternate = {"Directors"})
     private List<Person> directors;
 
-    @SerializedName(value = "movies", alternate = {"Movies"})
+    @SerializedName (value = "movies", alternate = {"Movies"})
     private List<String> movies;
 
     /**
@@ -104,6 +104,7 @@ public class ChatbotVocabulary
 
     /**
      * Get the list of actors
+     *
      * @return the actors
      */
     public List<Person> getActors()
@@ -113,6 +114,7 @@ public class ChatbotVocabulary
 
     /**
      * Get the list of actresses
+     *
      * @return the actresses
      */
     public List<Person> getActresses()
@@ -122,6 +124,7 @@ public class ChatbotVocabulary
 
     /**
      * Get the list of directors
+     *
      * @return the directors
      */
     public List<Person> getDirectors()
@@ -131,6 +134,7 @@ public class ChatbotVocabulary
 
     /**
      * Get the list of movies
+     *
      * @return the movies
      */
     public List<String> getMovies()
@@ -140,6 +144,7 @@ public class ChatbotVocabulary
 
     /**
      * Get the list of unexpected responses
+     *
      * @return a list of unexpected responses
      */
     public List<Response> getUnexpectedResponses()
@@ -149,14 +154,15 @@ public class ChatbotVocabulary
 
     /**
      * Determine if the given response is a known response
+     *
      * @param userResponse a response from the user to check
      * @return a value indicating if the response is known
      */
     public boolean inResponses(String userResponse)
     {
-        for(Response knownResponse : this.responses)
+        for (Response knownResponse : this.responses)
         {
-            if( knownResponse.equals(userResponse))
+            if (knownResponse.equals(userResponse))
             {
                 return true;
             }
@@ -166,14 +172,15 @@ public class ChatbotVocabulary
 
     /**
      * Determin if the given query is a known query
+     *
      * @param userQuery a query from the user to check
      * @return a value indicating if the query is known
      */
     public boolean inQueries(String userQuery)
     {
-        for(Query knownQuery : this.queries)
+        for (Query knownQuery : this.queries)
         {
-            if( knownQuery.equals(userQuery))
+            if (knownQuery.equals(userQuery))
             {
                 return true;
             }
@@ -183,14 +190,15 @@ public class ChatbotVocabulary
 
     /**
      * Get a query by the question
+     *
      * @param userQuery the question the user is asking
      * @return a query assocaited with the question asked.
      */
     public Query getQueryByQuestion(String userQuery)
     {
-        for(Query knownQuery : this.queries)
+        for (Query knownQuery : this.queries)
         {
-            if( knownQuery.equals(userQuery))
+            if (knownQuery.equals(userQuery))
             {
                 return knownQuery;
             }

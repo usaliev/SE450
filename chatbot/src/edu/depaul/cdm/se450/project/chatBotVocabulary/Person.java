@@ -17,6 +17,6 @@ public class Person
 
     public boolean getEval()
     {
-       return this.eval.compareToIgnoreCase("like") == 0;
+        return this.eval.compareToIgnoreCase("like") == 0;
     }
 }

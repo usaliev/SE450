@@ -10,12 +10,12 @@ import com.google.gson.*;
 public class OutputView extends View
 {
 
-    public void displayOutput( String output )
+    public void displayOutput(String output)
     {
         System.out.println(output);
     }
 
-    public void displayConfigFile( ChatbotVocabulary configFile )
+    public void displayConfigFile(ChatbotVocabulary configFile)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         System.out.println(gson.toJson(configFile));

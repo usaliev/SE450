@@ -24,6 +24,16 @@ public class Model implements Observable
     private ArrayList<Observer> observers = new ArrayList<>();
 
     /**
+     * Return the banner for this application.
+     *
+     * @return banner for application
+     */
+    public String getBanner()
+    {
+        return banner.toString();
+    }
+
+    /**
      * Set the banner for this application.
      *
      * @param b banner for application
@@ -34,13 +44,17 @@ public class Model implements Observable
     }
 
     /**
-     * Return the banner for this application.
+     * Get the user input for this application.
      *
-     * @return banner for application
+     * @return u ser input for application
      */
-    public String getBanner()
+    public String getUserInput()
     {
-        return banner.toString();
+        if (this.input == null)
+        {
+            return null;
+        }
+        return this.input.toString();
     }
 
     /**
@@ -54,13 +68,13 @@ public class Model implements Observable
     }
 
     /**
-     * Get the user input for this application.
+     * Get the chatbotVocabulary object
      *
-     * @return u ser input for application
+     * @return The chatbotVocabulary object
      */
-    public String getUserInput()
+    public ChatbotVocabulary getConfigurationFile()
     {
-        return input.toString();
+        return this.chatbotVocabulary;
     }
 
     /**
@@ -83,16 +97,6 @@ public class Model implements Observable
             System.out.println("Error " + ex);
             notifyObservers(EventCode.EXIT_CHATBOT);
         }
-    }
-
-    /**
-     * Get the chatbotVocabulary object
-     *
-     * @return The chatbotVocabulary object
-     */
-    public ChatbotVocabulary getConfigurationFile()
-    {
-        return this.chatbotVocabulary;
     }
 
     /**
@@ -181,7 +185,7 @@ public class Model implements Observable
         for (Query query : this.chatbotVocabulary.getQueries())
         {
             this.queryUser(query);
-            String response = this.getChatbotResponse( this.input.toString(), query);
+            String response = this.getChatbotResponse(this.input.toString(), query);
             this.input = new StringBuilder(response);
             notifyObservers(EventCode.DISPLAY_OUTPUT);
         }
@@ -205,13 +209,17 @@ public class Model implements Observable
             }
             else
             {
-                this.userResponse.setResponseType( new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
+                this.userResponse.setResponseType(new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
                 this.input = new StringBuilder(this.userResponse.getResponse());
                 this.notifyObservers(EventCode.DISPLAY_OUTPUT);
             }
         }
     }
 
+    /**
+     * Ask the user a question
+     * @param query the query to ask
+     */
     private void queryUser(Query query)
     {
         this.input = new StringBuilder(query.getQuestion());
@@ -227,39 +235,45 @@ public class Model implements Observable
         }
     }
 
+    /**
+     * Respond to the users responses to questions asked by the chatbot
+     * @param userResponse the users response
+     * @param questionAsked the question that was asked
+     * @return a reply statement from the chatbot
+     */
     private String getChatbotResponse(String userResponse, Query questionAsked)
     {
         String tag = questionAsked.getTag();
         String subTag = questionAsked.getSubTag();
 
-        if( tag.compareToIgnoreCase("movies") == 0)
+        if (tag.compareToIgnoreCase("movies") == 0)
         {
-            if( subTag.compareToIgnoreCase("title") == 0)
+            if (subTag.compareToIgnoreCase("title") == 0)
             {
-               return this.checkMovie();
+                return this.checkMovie();
             }
-            if( subTag.compareToIgnoreCase("actor") == 0)
+            if (subTag.compareToIgnoreCase("actor") == 0)
             {
                 return this.checkActor();
             }
-            if( subTag.compareToIgnoreCase("actress") == 0)
+            if (subTag.compareToIgnoreCase("actress") == 0)
             {
                 return this.checkActress();
             }
-            if( subTag.compareToIgnoreCase("director") == 0)
+            if (subTag.compareToIgnoreCase("director") == 0)
             {
                 return this.checkDirector();
             }
         }
 
-        if( this.chatbotVocabulary.inResponses(userResponse))
+        if (this.chatbotVocabulary.inResponses(userResponse))
         {
-            this.userResponse.setResponseType( new ExpectedResponse(userResponse));
+            this.userResponse.setResponseType(new ExpectedResponse(userResponse));
             return this.userResponse.getResponse();
         }
         else
         {
-            this.userResponse.setResponseType( new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
+            this.userResponse.setResponseType(new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
             return this.userResponse.getResponse();
         }
     }
@@ -284,7 +298,7 @@ public class Model implements Observable
             }
         }
 
-        this.userResponse.setResponseType( new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
+        this.userResponse.setResponseType(new UnexpectedResponse(this.chatbotVocabulary.getUnexpectedResponses()));
         this.input = new StringBuilder(this.userResponse.getResponse());
         this.notifyObservers(EventCode.DISPLAY_OUTPUT);
     }
@@ -321,36 +335,48 @@ public class Model implements Observable
         return line;
     }
 
+    /**
+     * Check if the movie the user specified is known
+     * @return A statement about whether the movie is known
+     */
     private String checkMovie()
     {
-        if( this.chatbotVocabulary.getMovies().contains(this.input.toString()))
+        if (this.chatbotVocabulary.getMovies().contains(this.input.toString()))
         {
             return "I’ve seen that movie";
         }
         return "I haven't seen that movie";
     }
 
+    /**
+     * Check if the actor the user specified is known and or liked
+     * @return A statement about whether the actor is known or liked
+     */
     private String checkActor()
     {
-        for( Person actor : this.chatbotVocabulary.getActors())
+        for (Person actor : this.chatbotVocabulary.getActors())
         {
-            if( actor.getName().compareToIgnoreCase(this.input.toString()) == 0 )
+            if (actor.getName().compareToIgnoreCase(this.input.toString()) == 0)
             {
                 if (actor.getEval())
                 {
                     return "I like that actor";
                 }
-               return "I don't like that actor";
+                return "I don't like that actor";
             }
         }
         return "I don't know that actor";
     }
 
+    /**
+     * Check if the actress the user specified is known and or liked
+     * @return A statement about whether the actress is known or liked
+     */
     private String checkActress()
     {
-        for( Person actress : this.chatbotVocabulary.getActresses())
+        for (Person actress : this.chatbotVocabulary.getActresses())
         {
-            if( actress.getName().compareToIgnoreCase(this.input.toString()) == 0 )
+            if (actress.getName().compareToIgnoreCase(this.input.toString()) == 0)
             {
                 if (actress.getEval())
                 {
@@ -362,11 +388,16 @@ public class Model implements Observable
         return "I don't know that actress";
     }
 
+    /**
+     * Check if the chatbot knows the director the user specified, if it doesnt ask for a movie they directed
+     * @return a chatbot response either stating the director is liked/not liked or a a statement about a movie the
+     * director directed
+     */
     private String checkDirector()
     {
-        for( Person director : this.chatbotVocabulary.getDirectors())
+        for (Person director : this.chatbotVocabulary.getDirectors())
         {
-            if( director.getName().compareToIgnoreCase(this.input.toString()) == 0 )
+            if (director.getName().compareToIgnoreCase(this.input.toString()) == 0)
             {
                 if (director.getEval())
                 {
@@ -378,7 +409,7 @@ public class Model implements Observable
         this.input = new StringBuilder("I don't know that director");
         notifyObservers(EventCode.DISPLAY_OUTPUT);
 
-        Query nameAMovie = new Query( "Tell me one film the director made", "movies", "title");
+        Query nameAMovie = new Query("Tell me one film the director made", "movies", "title");
         this.queryUser(nameAMovie);
         return this.getChatbotResponse(this.input.toString(), nameAMovie);
     }

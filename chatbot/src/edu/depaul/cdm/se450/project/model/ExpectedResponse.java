@@ -12,14 +12,14 @@ public class ExpectedResponse implements ChatbotResponse
 
     public String getResponse()
     {
-        String predicate ;
+        String predicate;
         int beginIndex = 0;
 
-        if( userStatement.toLowerCase().contains("i am"))
+        if (userStatement.toLowerCase().contains("i am"))
         {
             beginIndex = userStatement.toLowerCase().indexOf("i am") + 5;
         }
-        if( userStatement.toLowerCase().contains("i'm".toLowerCase()))
+        if (userStatement.toLowerCase().contains("i'm".toLowerCase()))
         {
             beginIndex = userStatement.toLowerCase().indexOf("i'm") + 4;
         }
@@ -33,13 +33,13 @@ public class ExpectedResponse implements ChatbotResponse
 
     private String cleanUpPredicate(String predicate)
     {
-        predicate = predicate.replace( ",", "");
-        predicate = predicate.replace( ".", "");
-        predicate = predicate.replace( "'", "");
-        predicate = predicate.replace( "\"", "");
-        predicate = predicate.replace( "?", "");
-        predicate = predicate.replace( "!", "");
-        predicate = predicate.replace( ";", "");
+        predicate = predicate.replace(",", "");
+        predicate = predicate.replace(".", "");
+        predicate = predicate.replace("'", "");
+        predicate = predicate.replace("\"", "");
+        predicate = predicate.replace("?", "");
+        predicate = predicate.replace("!", "");
+        predicate = predicate.replace(";", "");
 
         return predicate;
     }

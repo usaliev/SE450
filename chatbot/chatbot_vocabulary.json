@@ -1,31 +1,29 @@
 {
-  "properties": [{
-    "tag": "user",
-    "subtag": "nickName",
-    "value": "Luai"
-  },
+  "properties": [
+    {
+      "tag": "user",
+      "subtag": "nickName",
+      "value": "Luai"
+    },
     {
       "tag": "chatBot",
       "subtag": "nickName",
       "value": "Eliza"
-    }],
-  "users":
-  {
+    }
+  ],
+  "users": {
     "name": "Luai",
     "terminator": "Bye!"
   },
-  "chatbot":
-  {
+  "chatbot": {
     "name": "Eliza",
     "terminator": "GoodBye!"
   },
-  "openingStatements":
-  [
+  "openingStatements": [
     "Hello ${user.nickName}!",
     "My name is ${chatBot.nickName}."
   ],
-  "queries":
-  [
+  "queries": [
     {
       "question": "How are you?",
       "tag": "health",
@@ -57,8 +55,7 @@
       "subtag": "title"
     }
   ],
-  "responses":
-  [
+  "responses": [
     {
       "response": "I am fine, thank you.",
       "tag": "health",
@@ -75,8 +72,7 @@
       "subtag": "fine"
     }
   ],
-  "unexpectedResponses":
-  [
+  "unexpectedResponses": [
     {
       "response": "I don't understand.",
       "tag": "general",
@@ -88,15 +84,13 @@
       "subtag": "unexpected response"
     }
   ],
-  "movies" :
-  [
+  "movies": [
     "Saving Private Ryan",
     "Big",
     "Cast Away",
     "Terminator"
   ],
-  "actors":
-  [
+  "actors": [
     {
       "name": "Tom Hanks",
       "eval": "like"
@@ -110,8 +104,7 @@
       "eval": "dislike"
     }
   ],
-  "actresses":
-  [
+  "actresses": [
     {
       "name": "Sandra Bullock",
       "eval": "like"
@@ -125,8 +118,7 @@
       "eval": "dislike"
     }
   ],
-  "directors":
-  [
+  "directors": [
     {
       "name": "James Cameron",
       "eval": "like"
@@ -140,9 +132,8 @@
       "eval": "like"
     },
     {
-      "name":"Andrew Stanton",
+      "name": "Andrew Stanton",
       "eval": "dislike"
-              
     }
   ]
 }

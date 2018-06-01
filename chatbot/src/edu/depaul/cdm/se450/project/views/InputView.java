@@ -11,7 +11,7 @@ import edu.depaul.cdm.se450.project.util.EventCode;
 public class InputView extends View
 {
 
-    private StringBuilder inputString;      //  User input string
+    private StringBuilder inputString;
 
     /**
      * Return the last user input to this InputView.
@@ -20,6 +20,10 @@ public class InputView extends View
      */
     public String getUserInput()
     {
+        if (this.inputString == null)
+        {
+            return null;
+        }
         return inputString.toString();
     }
 
@@ -38,13 +42,12 @@ public class InputView extends View
         }
 
         inputString = new StringBuilder(inString);
-        notifyObservers(EventCode.SET_MODEL_VALUE);
     }
 
     public void readConfigurationFile()
     {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        String inString = "";
+        String inString;
 
         try
         {
@@ -62,10 +65,6 @@ public class InputView extends View
         catch (IOException e)
         {
             inputString = new StringBuilder("<" + e + ">");
-            notifyObservers(EventCode.SET_MODEL_VALUE);
         }
-
-        inputString = new StringBuilder(inString);
-        notifyObservers(EventCode.SET_MODEL_VALUE);
     }
 }

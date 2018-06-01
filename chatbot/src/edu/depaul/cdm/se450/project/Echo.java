@@ -24,7 +24,7 @@ public class Echo
             System.out.println("Usage: Echo [path to chatbot vocabulary file]");
             return;
         }
-        if( args[0].substring( args[0].length() - 4, args[0].length()).compareToIgnoreCase("json") != 0 )
+        if (args[0].substring(args[0].length() - 4, args[0].length()).compareToIgnoreCase("json") != 0)
         {
             System.out.println("Invalid file type, please specify a json file");
             return;
@@ -43,24 +43,10 @@ public class Echo
          *  of the application: Model, View, and Controller.
          */
         eModel = new Model();
-        eController = new Controller();
-
-        /*
-         *  Provide each of the architectural elements with the
-         *  appropriate references needed for them to set up
-         *  the Observer pattern.
-         */
         inputView = new InputView();
-        eController.setInputView(inputView);
-
         outputView = new OutputView();
-        eController.setOutputView(outputView);
 
-        /*
-         *  Provide the Controller with a reference to the Model so
-         *  that it can update the Model.
-         */
-        eController.setModel(eModel);
+        eController = new Controller(eModel, inputView, outputView);
 
         /*
          * Initialize Model instance with program banner.

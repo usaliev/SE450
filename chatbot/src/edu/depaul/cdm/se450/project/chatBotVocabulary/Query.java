@@ -22,9 +22,10 @@ public class Query
 
     /**
      * Constructor to build a new query
+     *
      * @param question the question to ask
-     * @param tag a tag associated with the query
-     * @param subTag a subtag associated with the query
+     * @param tag      a tag associated with the query
+     * @param subTag   a subtag associated with the query
      */
     public Query(String question, String tag, String subTag)
     {
@@ -65,7 +66,7 @@ public class Query
 
     public boolean equals(Object obj)
     {
-        String query = (String)obj;
+        String query = (String) obj;
         return this.question.compareToIgnoreCase(query) == 0;
     }
 }
